@@ -1,3 +1,5 @@
+package hannaeismant.m101j;
+
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 
@@ -5,28 +7,24 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+public abstract class TemplateConfiguration {
 
-public class TemplateConfiguration {
+    private static final String BASE_DIRECTORY = "/templates";
 
     private static Map<String, Template> templates;
-    private static Configuration configuration;
 
     static {
         init();
     }
 
     public static Template getTemplate(final String templateName) {
-            return templates.get(templateName);
-    }
-
-    private TemplateConfiguration() {
-
+        return templates.get(templateName);
     }
 
     synchronized private static void init() {
-        configuration = new Configuration(Configuration.VERSION_2_3_23);
+        Configuration configuration = new Configuration(Configuration.VERSION_2_3_23);
         configuration.setDefaultEncoding("UTF-8");
-        configuration.setClassForTemplateLoading(TemplateConfiguration.class, "/");
+        configuration.setClassForTemplateLoading(TemplateConfiguration.class, BASE_DIRECTORY);
 
         templates = new HashMap<>(3);
 

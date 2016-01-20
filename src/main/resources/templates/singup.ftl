@@ -26,9 +26,9 @@
 
   <h1>${title}</h1>
 
-  <input class="form-control form-group" id="username" placeholder="Username"/>
-  <input class="form-control form-group" id="password" placeholder="Password"/>
-  <input class="form-control form-group" id="email" placeholder="E-mail"/>
+  <input class="form-control form-group" id="username" name="username" placeholder="Username"/>
+  <input class="form-control form-group" id="password" name="password" placeholder="Password"/>
+  <input class="form-control form-group" id="email" name="email" placeholder="E-mail"/>
   <button class="btn btn-primary form-control form-group" type="submit">Sign Up</button>
 
 </form>
