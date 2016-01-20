@@ -3,7 +3,7 @@ package hannaeismant.m101j.controllers;
 import freemarker.template.Template;
 import hannaeismant.m101j.AbstractRoute;
 import hannaeismant.m101j.TemplateConfiguration;
-import hannaeismant.m101j.datasources.UserDAO;
+import hannaeismant.m101j.user.UserService;
 import spark.Request;
 import spark.Response;
 
@@ -13,10 +13,10 @@ import java.util.Map;
 
 public class SignupController extends AbstractRoute {
 
-    private UserDAO userDAO;
+    private UserService userService;
 
-    public SignupController(final UserDAO _userDAO) {
-        userDAO = _userDAO;
+    public SignupController(final UserService _userService) {
+        userService = _userService;
     }
 
     @Override
@@ -37,9 +37,8 @@ public class SignupController extends AbstractRoute {
 
         String username = request.queryParams("username");
         String password = request.queryParams("password");
-        String email = request.queryParams("email");
 
-        userDAO.create(username, password, email);
+        userService.create(username, password);
 
         response.redirect("/");
         return "";

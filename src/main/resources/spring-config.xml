@@ -11,6 +11,38 @@
                            http://www.springframework.org/schema/context/spring-context.xsd"
        default-lazy-init="true">
 
+
+
+    <!-- User -->
+
+    <bean class="hannaeismant.m101j.user.UserDAOImplMongo"
+          id="userDAO"
+          init-method="init">
+        <constructor-arg ref="mongoConfiguration"/>
+    </bean>
+
+    <bean class="hannaeismant.m101j.user.UserServiceImpl"
+          id="userService">
+        <constructor-arg ref="userDAO"/>
+    </bean>
+
+    <!-- Routing -->
+
+    <util:map id="routing">
+        <entry key="/" value-ref="homeController"/>
+        <entry key="/login" value-ref="loginController"/>
+        <entry key="/signup" value-ref="signupController"/>
+    </util:map>
+
+    <bean class="hannaeismant.m101j.controllers.HomeController" id="homeController"/>
+    <bean class="hannaeismant.m101j.controllers.LoginController" id="loginController"/>
+
+    <bean class="hannaeismant.m101j.controllers.SignupController" id="signupController">
+        <constructor-arg ref="userService"/>
+    </bean>
+
+    <!-- Main configuration -->
+
     <bean class="hannaeismant.m101j.MongoConfiguration"
           id="mongoConfiguration"
           init-method="init">
@@ -23,25 +55,6 @@
           init-method="init"
           destroy-method="destroy">
         <constructor-arg ref="routing"/>
-    </bean>
-
-    <bean class="hannaeismant.m101j.datasources.UserDAO"
-          id="userDAO"
-          init-method="init">
-        <constructor-arg ref="mongoConfiguration"/>
-    </bean>
-
-    <util:map id="routing">
-        <entry key="/" value-ref="homeController"/>
-        <entry key="/login" value-ref="loginController"/>
-        <entry key="/signup" value-ref="signupController"/>
-    </util:map>
-
-    <bean class="hannaeismant.m101j.controllers.HomeController" id="homeController"/>
-    <bean class="hannaeismant.m101j.controllers.LoginController" id="loginController"/>
-
-    <bean class="hannaeismant.m101j.controllers.SignupController" id="signupController">
-        <constructor-arg ref="userDAO"/>
     </bean>
 
     <bean id="configurationProperties"
