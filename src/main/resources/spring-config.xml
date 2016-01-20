@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                           http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+                           http://www.springframework.org/schema/util
+                           http://www.springframework.org/schema/util/spring-util-3.2.xsd
+                           http://www.springframework.org/schema/context
+                           http://www.springframework.org/schema/context/spring-context.xsd"
+       default-lazy-init="true">
+
+    <bean class="hannaeismant.m101j.MongoConfiguration"
+          id="mongoConfiguration"
+          init-method="init">
+        <constructor-arg value="${database.name}"/>
+    </bean>
+
+    <bean class="hannaeismant.m101j.SparkConfiguration"
+          id="sparkConfiguration"
+          lazy-init="false"
+          init-method="init"
+          destroy-method="destroy">
+        <constructor-arg ref="routing"/>
+    </bean>
+
+    <bean class="hannaeismant.m101j.datasources.UserDAO"
+          id="userDAO"
+          init-method="init">
+        <constructor-arg ref="mongoConfiguration"/>
+    </bean>
+
+    <util:map id="routing">
+        <entry key="/" value-ref="homeController"/>
+        <entry key="/login" value-ref="loginController"/>
+        <entry key="/signup" value-ref="signupController"/>
+    </util:map>
+
+    <bean class="hannaeismant.m101j.controllers.HomeController" id="homeController"/>
+    <bean class="hannaeismant.m101j.controllers.LoginController" id="loginController"/>
+
+    <bean class="hannaeismant.m101j.controllers.SignupController" id="signupController">
+        <constructor-arg ref="userDAO"/>
+    </bean>
+
+    <bean id="configurationProperties"
+          class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="locations">
+            <list>
+                <value>classpath:database.properties</value>
+            </list>
+        </property>
+        <property name="ignoreResourceNotFound" value="true"/>
+        <property name="systemPropertiesMode">
+            <util:constant
+                    static-field="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer.SYSTEM_PROPERTIES_MODE_OVERRIDE"/>
+        </property>
+    </bean>
+
+</beans>

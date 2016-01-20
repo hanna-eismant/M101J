@@ -5,22 +5,21 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import org.bson.Document;
 
-public abstract class MongoConfiguration {
+public class MongoConfiguration {
 
-    public static final String DATABASE_NAME = "hannaeismant";
+    private String databaseName;
+    private MongoDatabase database;
 
-    private static MongoDatabase database;
-
-    static {
-        init();
+    public MongoConfiguration(final String _databaseName) {
+        databaseName = _databaseName;
     }
 
-    public static MongoCollection<Document> getCollection(final String collectionName) {
-        return database.getCollection(collectionName);
-    }
-
-    synchronized private static void init() {
+    private void init() {
         MongoClient client = new MongoClient();
-        database = client.getDatabase(DATABASE_NAME);
+        database = client.getDatabase(databaseName);
+    }
+
+    public MongoCollection<Document> getCollection(final String collectionName) {
+        return database.getCollection(collectionName);
     }
 }

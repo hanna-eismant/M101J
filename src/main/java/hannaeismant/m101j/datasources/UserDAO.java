@@ -12,17 +12,15 @@ public class UserDAO {
     private static final String PASSWORD_FIELD = "password";
     private static final String EMAIL_FIELD = "email";
 
-    private static UserDAO instance;
-
+    private MongoConfiguration mongoConfiguration;
     private MongoCollection<Document> collection;
 
-    public static UserDAO getInstance() {
-        if (instance == null) {
-            instance = new UserDAO();
-            instance.init();
-        }
+    public UserDAO(final MongoConfiguration _mongoConfiguration) {
+        mongoConfiguration = _mongoConfiguration;
+    }
 
-        return instance;
+    private void init() {
+        collection = mongoConfiguration.getCollection(COLLECTION_NAME);
     }
 
     public void create(final String username, final String password, final String email) {
@@ -32,9 +30,5 @@ public class UserDAO {
                 .append(EMAIL_FIELD, email);
 
         collection.insertOne(user);
-    }
-
-    private void init() {
-        collection = MongoConfiguration.getCollection(COLLECTION_NAME);
     }
 }
