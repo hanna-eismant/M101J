@@ -2,6 +2,7 @@ package hannaeismant.m101j.user;
 
 import org.bson.Document;
 
+
 public class UserServiceImpl implements UserService {
 
     private UserDAO userDAO;

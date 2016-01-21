@@ -1,11 +1,14 @@
 package hannaeismant.m101j.user;
 
+import com.mongodb.MongoWriteException;
 import com.mongodb.client.MongoCollection;
 import hannaeismant.m101j.AbstractIntegrationTest;
 import org.bson.Document;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import javax.validation.ConstraintViolationException;
 
 import static org.junit.Assert.*;
 
@@ -24,8 +27,10 @@ public class UserServiceImplIntegrationTest extends AbstractIntegrationTest {
         collection.drop();
     }
 
+    // Create
+
     @Test
-    public void testCreate() {
+    public void test_Create() {
         User user = userService.create(username, password);
 
         assertNotNull("Created user cannot be 'null'", user);
@@ -33,14 +38,36 @@ public class UserServiceImplIntegrationTest extends AbstractIntegrationTest {
         assertEquals("Created user has incorrect password", password, user.password);
     }
 
-    @Test(expected = Exception.class)
-    public void testCreateDuplicated() {
+    @Test(expected = MongoWriteException.class)
+    public void test_Create_Duplicated() {
         userService.create(username, password);
         userService.create(username, password);
     }
 
+    @Test(expected = ConstraintViolationException.class)
+    public void test_Create_EmptyUsername() {
+        userService.create("", password);
+    }
+
+    @Test(expected = ConstraintViolationException.class)
+    public void test_Create_NullUsername() {
+        userService.create(null, password);
+    }
+
+    @Test(expected = ConstraintViolationException.class)
+    public void test_Create_EmptyPassword() {
+        userService.create(username, "");
+    }
+
+    @Test(expected = ConstraintViolationException.class)
+    public void test_Create_NullPassword() {
+        userService.create(username, null);
+    }
+
+    // Find
+
     @Test
-    public void testFindRegistered() {
+    public void test_Find_Registered() {
         userService.create(username, password);
         User user = userService.find(username);
 
@@ -50,13 +77,23 @@ public class UserServiceImplIntegrationTest extends AbstractIntegrationTest {
     }
 
     @Test
-    public void testFindUnregistered() {
+    public void test_Find_Unregistered() {
         User user = userService.find(username);
         assertNull("Unregistered user should be 'null'", user);
     }
 
+    public void test_Find_EmptyUsername() {
+
+    }
+
+    public void test_Find_NullUsername() {
+
+    }
+
+    // Update Password
+
     @Test
-    public void testUpdatePassword() {
+    public void test_UpdatePassword_Registered() {
         userService.create(username, password);
         String newPassword = password + "new!Pass";
 
@@ -65,5 +102,32 @@ public class UserServiceImplIntegrationTest extends AbstractIntegrationTest {
         assertEquals("User has incorrect username", username, user.username);
         assertNotEquals("User has old password", password, user.password);
         assertEquals("User should have new password", newPassword, user.password);
+    }
+
+    @Test
+    public void test_UpdatePassword_Unregistered() {
+
+    }
+
+    @Test(expected = ConstraintViolationException.class)
+    public void test_UpdatePassword_EmptyUsername() {
+        String newPassword = password + "new!Pass";
+        userService.updatePassword("", newPassword);
+    }
+
+    @Test(expected = ConstraintViolationException.class)
+    public void test_UpdatePassword_NullUsername() {
+        String newPassword = password + "new!Pass";
+        userService.updatePassword(null, newPassword);
+    }
+
+    @Test(expected = ConstraintViolationException.class)
+    public void test_UpdatePassword_EmptyPassword() {
+        userService.updatePassword(username, "");
+    }
+
+    @Test(expected = ConstraintViolationException.class)
+    public void test_UpdatePassword_NullPassword() {
+        userService.updatePassword(username, null);
     }
 }

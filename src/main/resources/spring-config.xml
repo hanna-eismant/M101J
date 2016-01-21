@@ -9,8 +9,7 @@
                            http://www.springframework.org/schema/util/spring-util-3.2.xsd
                            http://www.springframework.org/schema/context
                            http://www.springframework.org/schema/context/spring-context.xsd"
-       default-lazy-init="true">
-
+       default-lazy-init="false">
 
 
     <!-- User -->
@@ -26,6 +25,13 @@
         <constructor-arg ref="userDAO"/>
     </bean>
 
+    <bean class="hannaeismant.m101j.user.SessionServiceImpl"
+          id="sessionService">
+
+    </bean>
+
+
+
     <!-- Routing -->
 
     <util:map id="routing">
@@ -34,11 +40,18 @@
         <entry key="/signup" value-ref="signupController"/>
     </util:map>
 
-    <bean class="hannaeismant.m101j.controllers.HomeController" id="homeController"/>
+    <bean class="hannaeismant.m101j.controllers.HomeController"
+          id="homeController">
+        <constructor-arg index="0" ref="userService"/>
+        <constructor-arg index="1" ref="sessionService"/>
+    </bean>
+
     <bean class="hannaeismant.m101j.controllers.LoginController" id="loginController"/>
 
-    <bean class="hannaeismant.m101j.controllers.SignupController" id="signupController">
-        <constructor-arg ref="userService"/>
+    <bean class="hannaeismant.m101j.controllers.SignupController"
+          id="signupController">
+        <constructor-arg index="0" ref="userService"/>
+        <constructor-arg index="1" ref="sessionService"/>
     </bean>
 
     <!-- Main configuration -->
@@ -51,7 +64,6 @@
 
     <bean class="hannaeismant.m101j.SparkConfiguration"
           id="sparkConfiguration"
-          lazy-init="false"
           init-method="init"
           destroy-method="destroy">
         <constructor-arg ref="routing"/>
@@ -70,5 +82,11 @@
                     static-field="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer.SYSTEM_PROPERTIES_MODE_OVERRIDE"/>
         </property>
     </bean>
+
+    <bean class="org.springframework.validation.beanvalidation.MethodValidationPostProcessor"
+          id="methodValidationPostProcessor"/>
+
+    <bean class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean"
+          id="validator"/>
 
 </beans>

@@ -1,10 +1,15 @@
 package hannaeismant.m101j.user;
 
+import org.springframework.validation.annotation.Validated;
+
+import javax.validation.constraints.NotNull;
+
+@Validated
 public interface UserService {
 
-    User create(final String _username, final String _password);
+    User create(final @NotNull String _username, final @NotNull String _password);
 
-    User find(final String _username);
+    User find(final @NotNull String _username);
 
-    User updatePassword(final String _username, final String _newPassword);
+    User updatePassword(final @NotNull String _username, final @NotNull String _newPassword);
 }
