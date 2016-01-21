@@ -16,11 +16,18 @@
 </head>
 <body>
 
+
 <ul class="nav nav-pills">
   <li role="presentation" class="active"><a href="/">Home</a></li>
+<#if username??>
+  <li role="presentation"><a href="/logout">Logout</a></li>
+<#else>
   <li role="presentation"><a href="/login">Login</a></li>
   <li role="presentation"><a href="/signup">Sign Up</a></li>
+</#if>
 </ul>
+
+<h1><#if username??>Welcome, ${username}</#if></h1>
 
 
 </body>

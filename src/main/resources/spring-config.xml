@@ -8,8 +8,7 @@
                            http://www.springframework.org/schema/util
                            http://www.springframework.org/schema/util/spring-util-3.2.xsd
                            http://www.springframework.org/schema/context
-                           http://www.springframework.org/schema/context/spring-context.xsd"
-       default-lazy-init="false">
+                           http://www.springframework.org/schema/context/spring-context.xsd">
 
 
     <!-- User -->
@@ -25,11 +24,19 @@
         <constructor-arg ref="userDAO"/>
     </bean>
 
-    <bean class="hannaeismant.m101j.user.SessionServiceImpl"
-          id="sessionService">
 
+    <!-- Session -->
+
+    <bean class="hannaeismant.m101j.session.SessionDAOImplMongo"
+          id="sessionDAO"
+          init-method="init">
+        <constructor-arg ref="mongoConfiguration"/>
     </bean>
 
+    <bean class="hannaeismant.m101j.session.SessionServiceImpl"
+          id="sessionService">
+        <constructor-arg ref="sessionDAO"/>
+    </bean>
 
 
     <!-- Routing -->
@@ -53,6 +60,7 @@
         <constructor-arg index="0" ref="userService"/>
         <constructor-arg index="1" ref="sessionService"/>
     </bean>
+
 
     <!-- Main configuration -->
 

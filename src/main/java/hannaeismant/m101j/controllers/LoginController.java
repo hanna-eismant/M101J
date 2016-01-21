@@ -1,7 +1,6 @@
 package hannaeismant.m101j.controllers;
 
 import freemarker.template.Template;
-import hannaeismant.m101j.AbstractRoute;
 import hannaeismant.m101j.TemplateConfiguration;
 import spark.Request;
 import spark.Response;
@@ -14,8 +13,6 @@ public class LoginController extends AbstractRoute {
 
     @Override
     public Object get(final Request request, final Response response) throws Exception {
-        System.out.println(request.requestMethod() + " Login");
-
         Template template = TemplateConfiguration.getTemplate("login");
         Map<String, String> params = new HashMap<>(1);
         params.put("title", "Login");
@@ -26,8 +23,6 @@ public class LoginController extends AbstractRoute {
 
     @Override
     public Object post(final Request request, final Response response) throws Exception {
-        System.out.println(request.requestMethod() + " Login");
-
         response.redirect("/");
         return "";
     }

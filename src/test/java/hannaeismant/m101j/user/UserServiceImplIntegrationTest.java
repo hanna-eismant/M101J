@@ -1,10 +1,7 @@
 package hannaeismant.m101j.user;
 
 import com.mongodb.MongoWriteException;
-import com.mongodb.client.MongoCollection;
 import hannaeismant.m101j.AbstractIntegrationTest;
-import org.bson.Document;
-import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -20,12 +17,6 @@ public class UserServiceImplIntegrationTest extends AbstractIntegrationTest {
     private String username = "test user";
     private String password = "pass123";
 
-    @Before
-    public void setUp() {
-        // drop all data from collection
-        MongoCollection<Document> collection = mongoConfiguration.getCollection(UserDAO.COLLECTION_NAME);
-        collection.drop();
-    }
 
     // Create
 
@@ -64,6 +55,7 @@ public class UserServiceImplIntegrationTest extends AbstractIntegrationTest {
         userService.create(username, null);
     }
 
+
     // Find
 
     @Test
@@ -82,13 +74,16 @@ public class UserServiceImplIntegrationTest extends AbstractIntegrationTest {
         assertNull("Unregistered user should be 'null'", user);
     }
 
+    @Test(expected = ConstraintViolationException.class)
     public void test_Find_EmptyUsername() {
-
+        userService.find("");
     }
 
+    @Test(expected = ConstraintViolationException.class)
     public void test_Find_NullUsername() {
-
+        userService.find(null);
     }
+
 
     // Update Password
 
