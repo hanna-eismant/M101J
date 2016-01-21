@@ -14,22 +14,22 @@ public class UserServiceImpl implements UserService {
     @Override
     public User create(final String _username, final String _password) {
         Document document = userDAO.create(_username, _password);
-        return buildUser(document);
+        return buildUserObject(document);
     }
 
     @Override
     public User find(final String _username) {
         Document document = userDAO.find(_username);
-        return buildUser(document);
+        return buildUserObject(document);
     }
 
     @Override
     public User updatePassword(final String _username, final String _newPassword) {
         Document document = userDAO.update(_username, _newPassword);
-        return buildUser(document);
+        return buildUserObject(document);
     }
 
-    private User buildUser(final Document _document) {
+    private User buildUserObject(final Document _document) {
         if (_document == null) {
             return null;
         }
