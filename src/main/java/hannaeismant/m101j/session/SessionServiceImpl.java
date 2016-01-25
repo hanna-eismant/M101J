@@ -11,19 +11,19 @@ public class SessionServiceImpl implements SessionService {
     }
 
     @Override
-    public Session createSession(final String _username, final String _token) {
+    public Session create(final String _username, final String _token) {
         Document document = sessionDAO.create(_username, _token);
         return buildSessionObject(document);
     }
 
     @Override
-    public Session findSession(final String _token) {
+    public Session find(final String _token) {
         Document document = sessionDAO.find(_token);
         return buildSessionObject(document);
     }
 
     @Override
-    public void removeSession(final String _token) {
+    public void remove(final String _token) {
         sessionDAO.remove(_token);
     }
 

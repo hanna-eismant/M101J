@@ -23,7 +23,7 @@ public class SessionServiceImplIntegrationTest extends AbstractIntegrationTest {
 
     @Test
     public void test_Create() {
-        Session session = sessionService.createSession(username, token);
+        Session session = sessionService.create(username, token);
 
         assertNotNull("Created session cannot be 'null'", session);
         assertEquals("Created session has incorrect id", token, session.token);
@@ -32,49 +32,49 @@ public class SessionServiceImplIntegrationTest extends AbstractIntegrationTest {
 
     @Test(expected = MongoWriteException.class)
     public void test_Create_DuplicatedToken() {
-        sessionService.createSession(username, token);
-        sessionService.createSession(username, token);
+        sessionService.create(username, token);
+        sessionService.create(username, token);
     }
 
     @Test
     public void test_Create_DuplicatedUsername() {
         String anotherToken = token + "_test";
-        sessionService.createSession(username, token);
-        sessionService.createSession(username, anotherToken);
+        sessionService.create(username, token);
+        sessionService.create(username, anotherToken);
     }
 
     @Test(expected = Exception.class)
     public void test_Create_UnregisteredUsername() {
         String anotherUsername = username + "_test";
-        sessionService.createSession(anotherUsername, token);
+        sessionService.create(anotherUsername, token);
     }
 
     @Test(expected = ConstraintViolationException.class)
     public void test_Create_EmptyToken() {
-        sessionService.createSession(username, "");
+        sessionService.create(username, "");
     }
 
     @Test(expected = ConstraintViolationException.class)
     public void test_Create_NullToken() {
-        sessionService.createSession(username, null);
+        sessionService.create(username, null);
     }
 
     @Test(expected = ConstraintViolationException.class)
     public void test_Create_EmptyUsername() {
-        sessionService.createSession("", token);
+        sessionService.create("", token);
     }
 
     @Test(expected = ConstraintViolationException.class)
     public void test_Create_NullUsername() {
-        sessionService.createSession(null, token);
+        sessionService.create(null, token);
     }
 
 
     // Find
 
     public void test_Find_Existing() {
-        sessionService.createSession(username, token);
-        Session session = sessionService.findSession(token);
+        sessionService.create(username, token);
+        Session session = sessionService.find(token);
 
         assertNotNull("Saved session cannot be 'null'", session);
         assertEquals("Saved session has incorrect token", token, session.token);
@@ -82,43 +82,43 @@ public class SessionServiceImplIntegrationTest extends AbstractIntegrationTest {
     }
 
     public void test_Find_NotExisting() {
-        Session session = sessionService.findSession("token");
+        Session session = sessionService.find("token");
         assertNotNull("Found session should be 'null'", session);
     }
 
     @Test(expected = ConstraintViolationException.class)
     public void test_Find_EmptyToken() {
-        sessionService.findSession("");
+        sessionService.find("");
     }
 
     @Test(expected = ConstraintViolationException.class)
     public void test_Find_NullToken() {
-        sessionService.findSession(null);
+        sessionService.find(null);
     }
 
 
     // Remove
 
     public void test_Remove_Existing() {
-        sessionService.createSession(username, token);
-        sessionService.removeSession(token);
-        Session session = sessionService.findSession(token);
+        sessionService.create(username, token);
+        sessionService.remove(token);
+        Session session = sessionService.find(token);
 
         assertNotNull("Removed session should be 'null'", session);
     }
 
     public void test_Remove_NotExisting() {
-        sessionService.removeSession("token");
+        sessionService.remove("token");
     }
 
     @Test(expected = ConstraintViolationException.class)
     public void test_Remove_EmptyToken() {
-        sessionService.removeSession("");
+        sessionService.remove("");
     }
 
     @Test(expected = ConstraintViolationException.class)
     public void test_Remove_NullToken() {
-        sessionService.removeSession(null);
+        sessionService.remove(null);
     }
 
 }

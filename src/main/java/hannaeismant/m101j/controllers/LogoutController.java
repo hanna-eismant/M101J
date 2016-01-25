@@ -20,7 +20,7 @@ public class LogoutController extends AbstractRoute {
     @Override
     public Object post(final Request request, final Response response) throws Exception {
         String cookie = request.cookie(COOKIE_NAME);
-        sessionService.removeSession(cookie);
+        sessionService.remove(cookie);
         response.removeCookie(cookie);
         response.redirect("/");
         return "";

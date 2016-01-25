@@ -32,7 +32,7 @@ public class HomeController extends AbstractRoute {
 
         if (cookie != null) {
             // get session
-            Session session = sessionService.findSession(cookie);
+            Session session = sessionService.find(cookie);
 
             if (session == null) {
                 // if not exist → put «null» username

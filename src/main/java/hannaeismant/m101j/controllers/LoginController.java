@@ -41,7 +41,7 @@ public class LoginController extends AbstractRoute {
 
         if (isCorrect) {
             String token = SessionTokenGenerator.generate();
-            sessionService.createSession(username, token);
+            sessionService.create(username, token);
             response.cookie(COOKIE_NAME, token, SECONDS_IN_HOUR * COOKIE_AGE_HOURS);
             response.redirect("/");
         } else {

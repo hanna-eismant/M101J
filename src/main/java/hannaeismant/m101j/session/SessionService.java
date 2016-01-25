@@ -7,9 +7,9 @@ import javax.validation.constraints.NotNull;
 @Validated
 public interface SessionService {
 
-    Session createSession(final @NotNull String _username, final @NotNull String _token);
+    Session create(final @NotNull String _username, final @NotNull String _token);
 
-    Session findSession(final @NotNull String _token);
+    Session find(final @NotNull String _token);
 
-    void removeSession(final @NotNull String _token);
+    void remove(final @NotNull String _token);
 }

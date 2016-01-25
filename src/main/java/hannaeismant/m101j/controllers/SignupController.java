@@ -40,7 +40,7 @@ public class SignupController extends AbstractRoute {
         userService.create(username, password);
 
         String token = SessionTokenGenerator.generate();
-        sessionService.createSession(username, token);
+        sessionService.create(username, token);
         response.cookie(COOKIE_NAME, token, SECONDS_IN_HOUR * COOKIE_AGE_HOURS);
 
         response.redirect("/");
