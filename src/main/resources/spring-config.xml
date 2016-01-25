@@ -45,6 +45,7 @@
         <entry key="/" value-ref="homeController"/>
         <entry key="/login" value-ref="loginController"/>
         <entry key="/signup" value-ref="signupController"/>
+        <entry key="/logout" value-ref="logoutController"/>
     </util:map>
 
     <bean class="hannaeismant.m101j.controllers.HomeController"
@@ -53,12 +54,20 @@
         <constructor-arg index="1" ref="sessionService"/>
     </bean>
 
-    <bean class="hannaeismant.m101j.controllers.LoginController" id="loginController"/>
+    <bean class="hannaeismant.m101j.controllers.LoginController"
+          id="loginController">
+        <constructor-arg index="0" ref="sessionService"/>
+        <constructor-arg index="1" ref="userService"/>
+    </bean>
 
     <bean class="hannaeismant.m101j.controllers.SignupController"
           id="signupController">
         <constructor-arg index="0" ref="userService"/>
         <constructor-arg index="1" ref="sessionService"/>
+    </bean>
+    <bean class="hannaeismant.m101j.controllers.LogoutController"
+          id="logoutController">
+        <constructor-arg ref="sessionService"/>
     </bean>
 
 

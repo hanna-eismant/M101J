@@ -29,6 +29,12 @@ public class UserServiceImpl implements UserService {
         return buildUserObject(document);
     }
 
+    @Override
+    public boolean checkCredentials(final String _username, final String _password) {
+        Document document = userDAO.find(_username, _password);
+        return document != null;
+    }
+
     private User buildUserObject(final Document _document) {
         if (_document == null) {
             return null;

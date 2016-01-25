@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+// todo: make me spring bean
 public abstract class TemplateConfiguration {
 
     private static final String BASE_DIRECTORY = "/templates";

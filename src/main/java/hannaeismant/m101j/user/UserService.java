@@ -12,4 +12,6 @@ public interface UserService {
     User find(final @NotNull String _username);
 
     User updatePassword(final @NotNull String _username, final @NotNull String _newPassword);
+
+    boolean checkCredentials(final @NotNull String _username, final @NotNull String _password);
 }

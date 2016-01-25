@@ -12,4 +12,6 @@ public interface UserDAO {
     Document find(String _username);
 
     Document update(String _username, String _newPassword);
+
+    Document find(String _username, String _password);
 }

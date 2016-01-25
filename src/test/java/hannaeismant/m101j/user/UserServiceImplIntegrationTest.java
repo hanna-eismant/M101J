@@ -125,4 +125,31 @@ public class UserServiceImplIntegrationTest extends AbstractIntegrationTest {
     public void test_UpdatePassword_NullPassword() {
         userService.updatePassword(username, null);
     }
+
+
+    // Check Credentials
+
+    @Test
+    public void test_CheckCredentials_CorrectPassword() {
+        userService.create(username, password);
+        boolean isCorrect = userService.checkCredentials(username, password);
+
+        assertTrue(isCorrect);
+    }
+
+    @Test
+    public void test_CheckCredentials_IncorrectPassword() {
+        String newPassword = password + "new!Pass";
+        userService.create(username, password);
+        boolean isCorrect = userService.checkCredentials(username, newPassword);
+
+        assertFalse(isCorrect);
+    }
+
+    @Test()
+    public void test_CheckCredentials_UnregisteredUser() {
+        boolean isCorrect = userService.checkCredentials(username, password);
+
+        assertFalse(isCorrect);
+    }
 }

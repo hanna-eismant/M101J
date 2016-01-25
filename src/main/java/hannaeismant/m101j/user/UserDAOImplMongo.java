@@ -6,6 +6,7 @@ import com.mongodb.client.model.ReturnDocument;
 import hannaeismant.m101j.MongoConfiguration;
 import org.bson.Document;
 
+import static com.mongodb.client.model.Filters.and;
 import static com.mongodb.client.model.Filters.eq;
 
 public class UserDAOImplMongo implements UserDAO {
@@ -34,7 +35,9 @@ public class UserDAOImplMongo implements UserDAO {
 
     @Override
     public Document find(final String _username) {
-        return collection.find().filter(eq(UserDAO.USERNAME_FIELD, _username)).first();
+        return collection.find()
+                .filter(eq(UserDAO.USERNAME_FIELD, _username))
+                .first();
     }
 
     @Override
@@ -45,5 +48,15 @@ public class UserDAOImplMongo implements UserDAO {
 
         FindOneAndReplaceOptions options = new FindOneAndReplaceOptions().returnDocument(ReturnDocument.AFTER);
         return collection.findOneAndReplace(eq(UserDAO.USERNAME_FIELD, _username), user, options);
+    }
+
+    @Override
+    public Document find(final String _username, final String _password) {
+        return collection.find()
+                .filter(
+                        and(
+                                eq(UserDAO.USERNAME_FIELD, _username),
+                                eq(UserDAO.PASSWORD_FIELD, _password)))
+                .first();
     }
 }

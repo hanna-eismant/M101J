@@ -18,8 +18,12 @@
 
 <ul class="nav nav-pills">
   <li role="presentation"><a href="/">Home</a></li>
+<#if username??>
+  <li role="presentation"><a href="/logout">Logout</a></li>
+<#else>
   <li role="presentation"><a href="/login">Login</a></li>
   <li role="presentation" class="active"><a href="/signup">Sign Up</a></li>
+</#if>
 </ul>
 
 <form class="sugnup-form col-xs-4 col-xs-offset-4" method="post">
@@ -28,7 +32,6 @@
 
   <input class="form-control form-group" id="username" name="username" placeholder="Username"/>
   <input class="form-control form-group" id="password" name="password" placeholder="Password"/>
-  <input class="form-control form-group" id="email" name="email" placeholder="E-mail"/>
   <button class="btn btn-primary form-control form-group" type="submit">Sign Up</button>
 
 </form>

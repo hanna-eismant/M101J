@@ -18,8 +18,12 @@
 
 <ul class="nav nav-pills">
   <li role="presentation"><a href="/">Home</a></li>
+<#if username??>
+  <li role="presentation"><a href="/logout">Logout</a></li>
+<#else>
   <li role="presentation" class="active"><a href="/login">Login</a></li>
   <li role="presentation"><a href="/signup">Sign Up</a></li>
+</#if>
 </ul>
 
 <form class="login-form col-xs-4 col-xs-offset-4" method="post">
