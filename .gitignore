@@ -1,0 +1,10 @@
+.idea/
+*.iml
+
+target/
+
+mongo/
+
+hm/
+mongoProc_3.1_win/
+mongoProc_3.1_win.zip

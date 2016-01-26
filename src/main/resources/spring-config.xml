@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                           http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+                           http://www.springframework.org/schema/util
+                           http://www.springframework.org/schema/util/spring-util-3.2.xsd
+                           http://www.springframework.org/schema/context
+                           http://www.springframework.org/schema/context/spring-context.xsd">
+
+
+    <!-- User -->
+
+    <bean class="hannaeismant.m101j.user.UserDAOImplMongo"
+          id="userDAO"
+          init-method="init">
+        <constructor-arg ref="mongoConfiguration"/>
+    </bean>
+
+    <bean class="hannaeismant.m101j.user.UserServiceImpl"
+          id="userService">
+        <constructor-arg ref="userDAO"/>
+    </bean>
+
+
+    <!-- Session -->
+
+    <bean class="hannaeismant.m101j.session.SessionDAOImplMongo"
+          id="sessionDAO"
+          init-method="init">
+        <constructor-arg ref="mongoConfiguration"/>
+    </bean>
+
+    <bean class="hannaeismant.m101j.session.SessionServiceImpl"
+          id="sessionService">
+        <constructor-arg ref="sessionDAO"/>
+    </bean>
+
+
+    <!-- Routing -->
+
+    <util:map id="routing">
+        <entry key="/" value-ref="homeController"/>
+        <entry key="/login" value-ref="loginController"/>
+        <entry key="/signup" value-ref="signupController"/>
+        <entry key="/logout" value-ref="logoutController"/>
+    </util:map>
+
+    <bean class="hannaeismant.m101j.controllers.HomeController"
+          id="homeController">
+        <constructor-arg index="0" ref="userService"/>
+        <constructor-arg index="1" ref="sessionService"/>
+    </bean>
+
+    <bean class="hannaeismant.m101j.controllers.LoginController"
+          id="loginController">
+        <constructor-arg index="0" ref="sessionService"/>
+        <constructor-arg index="1" ref="userService"/>
+    </bean>
+
+    <bean class="hannaeismant.m101j.controllers.SignupController"
+          id="signupController">
+        <constructor-arg index="0" ref="userService"/>
+        <constructor-arg index="1" ref="sessionService"/>
+    </bean>
+    <bean class="hannaeismant.m101j.controllers.LogoutController"
+          id="logoutController">
+        <constructor-arg ref="sessionService"/>
+    </bean>
+
+
+    <!-- Main configuration -->
+
+    <bean class="hannaeismant.m101j.MongoConfiguration"
+          id="mongoConfiguration"
+          init-method="init">
+        <constructor-arg value="${database.name}"/>
+    </bean>
+
+    <bean class="hannaeismant.m101j.SparkConfiguration"
+          id="sparkConfiguration"
+          init-method="init"
+          destroy-method="destroy">
+        <constructor-arg ref="routing"/>
+    </bean>
+
+    <bean id="configurationProperties"
+          class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="locations">
+            <list>
+                <value>classpath:database.properties</value>
+            </list>
+        </property>
+        <property name="ignoreResourceNotFound" value="true"/>
+        <property name="systemPropertiesMode">
+            <util:constant
+                    static-field="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer.SYSTEM_PROPERTIES_MODE_OVERRIDE"/>
+        </property>
+    </bean>
+
+    <bean class="org.springframework.validation.beanvalidation.MethodValidationPostProcessor"
+          id="methodValidationPostProcessor"/>
+
+    <bean class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean"
+          id="validator"/>
+
+</beans>
