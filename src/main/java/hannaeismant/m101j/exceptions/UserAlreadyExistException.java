@@ -1,4 +1,4 @@
-package hannaeismant.m101j.user;
+package hannaeismant.m101j.exceptions;
 
 public class UserAlreadyExistException extends Exception {
 

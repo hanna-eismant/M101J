@@ -1,8 +1,9 @@
 package hannaeismant.m101j.user;
 
 import com.mongodb.MongoWriteException;
-import hannaeismant.m101j.TimeoutException;
-import hannaeismant.m101j.UnknownException;
+import hannaeismant.m101j.exceptions.TimeoutException;
+import hannaeismant.m101j.exceptions.UnknownException;
+import hannaeismant.m101j.exceptions.UserAlreadyExistException;
 import org.bson.Document;
 
 public interface UserDAO {

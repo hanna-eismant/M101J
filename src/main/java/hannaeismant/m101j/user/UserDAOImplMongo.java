@@ -6,8 +6,9 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.model.FindOneAndReplaceOptions;
 import com.mongodb.client.model.ReturnDocument;
 import hannaeismant.m101j.MongoConfiguration;
-import hannaeismant.m101j.TimeoutException;
-import hannaeismant.m101j.UnknownException;
+import hannaeismant.m101j.exceptions.TimeoutException;
+import hannaeismant.m101j.exceptions.UnknownException;
+import hannaeismant.m101j.exceptions.UserAlreadyExistException;
 import org.bson.Document;
 
 import static com.mongodb.client.model.Filters.and;
