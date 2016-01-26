@@ -1,5 +1,8 @@
 package hannaeismant.m101j.user;
 
+import com.mongodb.MongoWriteException;
+import hannaeismant.m101j.TimeoutException;
+import hannaeismant.m101j.UnknownException;
 import org.bson.Document;
 
 public interface UserDAO {
@@ -7,7 +10,7 @@ public interface UserDAO {
     String USERNAME_FIELD = "_id";
     String PASSWORD_FIELD = "password";
 
-    Document create(String username, String password);
+    Document create(String username, String password) throws MongoWriteException, UserAlreadyExistException, UnknownException, TimeoutException;
 
     Document find(String _username);
 

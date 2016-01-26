@@ -1,5 +1,7 @@
 package hannaeismant.m101j.user;
 
+import hannaeismant.m101j.TimeoutException;
+import hannaeismant.m101j.UnknownException;
 import org.bson.Document;
 
 
@@ -12,7 +14,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User create(final String _username, final String _password) {
+    public User create(final String _username, final String _password)
+            throws TimeoutException, UserAlreadyExistException, UnknownException {
         Document document = userDAO.create(_username, _password);
         return buildUserObject(document);
     }

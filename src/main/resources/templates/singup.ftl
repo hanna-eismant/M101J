@@ -30,6 +30,10 @@
 
   <h1>${title}</h1>
 
+<#if error??>
+  <p class="bg-danger" style="padding: 15px;">${error}</p>
+</#if>
+
   <input class="form-control form-group" id="username" name="username" placeholder="Username"/>
   <input class="form-control form-group" id="password" name="password" placeholder="Password"/>
   <button class="btn btn-primary form-control form-group" type="submit">Sign Up</button>

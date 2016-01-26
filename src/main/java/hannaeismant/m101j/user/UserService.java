@@ -1,5 +1,7 @@
 package hannaeismant.m101j.user;
 
+import hannaeismant.m101j.TimeoutException;
+import hannaeismant.m101j.UnknownException;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.constraints.NotNull;
@@ -7,7 +9,8 @@ import javax.validation.constraints.NotNull;
 @Validated
 public interface UserService {
 
-    User create(final @NotNull String _username, final @NotNull String _password);
+    User create(final @NotNull String _username, final @NotNull String _password)
+            throws TimeoutException, UserAlreadyExistException, UnknownException;
 
     User find(final @NotNull String _username);
 

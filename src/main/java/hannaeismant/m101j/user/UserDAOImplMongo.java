@@ -1,9 +1,13 @@
 package hannaeismant.m101j.user;
 
+import com.mongodb.ErrorCategory;
+import com.mongodb.MongoWriteException;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.model.FindOneAndReplaceOptions;
 import com.mongodb.client.model.ReturnDocument;
 import hannaeismant.m101j.MongoConfiguration;
+import hannaeismant.m101j.TimeoutException;
+import hannaeismant.m101j.UnknownException;
 import org.bson.Document;
 
 import static com.mongodb.client.model.Filters.and;
@@ -23,12 +27,28 @@ public class UserDAOImplMongo implements UserDAO {
     }
 
     @Override
-    public Document create(final String _username, final String _password) {
+    public Document create(final String _username, final String _password)
+            throws UserAlreadyExistException, UnknownException, TimeoutException {
         Document user = new Document()
                 .append(USERNAME_FIELD, _username)
                 .append(PASSWORD_FIELD, _password);
 
-        collection.insertOne(user);
+        try {
+            collection.insertOne(user);
+        } catch (MongoWriteException e) {
+            ErrorCategory errorCategory = e.getError().getCategory();
+
+            switch (errorCategory) {
+                case UNCATEGORIZED:
+                    throw new UnknownException(e);
+                case DUPLICATE_KEY:
+                    throw new UserAlreadyExistException();
+                case EXECUTION_TIMEOUT:
+                    throw new TimeoutException();
+            }
+        } catch (Exception e) {
+            throw new UnknownException(e);
+        }
 
         return user;
     }
