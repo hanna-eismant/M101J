@@ -1,8 +1,15 @@
 package hannaeismant.m101j.controllers;
 
+import freemarker.template.Template;
+import freemarker.template.TemplateException;
+import hannaeismant.m101j.TemplateConfiguration;
 import spark.Request;
 import spark.Response;
 import spark.Route;
+
+import java.io.IOException;
+import java.io.StringWriter;
+import java.util.Map;
 
 public abstract class AbstractRoute implements Route {
 
@@ -21,6 +28,15 @@ public abstract class AbstractRoute implements Route {
         }
 
         return "";  // or throw exception
+    }
+
+    protected StringWriter processTemplate(Map<String, String> params)
+            throws TemplateException, IOException {
+
+        Template template = TemplateConfiguration.getTemplate("signup");
+        StringWriter stringWriter = new StringWriter();
+        template.process(params, stringWriter);
+        return stringWriter;
     }
 
     public abstract Object get(Request request, Response response) throws Exception;

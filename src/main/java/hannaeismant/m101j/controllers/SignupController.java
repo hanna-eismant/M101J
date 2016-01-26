@@ -1,19 +1,16 @@
 package hannaeismant.m101j.controllers;
 
-import freemarker.template.Template;
 import freemarker.template.TemplateException;
-import hannaeismant.m101j.TemplateConfiguration;
 import hannaeismant.m101j.exceptions.TimeoutException;
 import hannaeismant.m101j.exceptions.UnknownException;
+import hannaeismant.m101j.exceptions.UserAlreadyExistException;
 import hannaeismant.m101j.session.SessionService;
 import hannaeismant.m101j.session.SessionTokenGenerator;
-import hannaeismant.m101j.exceptions.UserAlreadyExistException;
 import hannaeismant.m101j.user.UserService;
 import spark.Request;
 import spark.Response;
 
 import java.io.IOException;
-import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -29,10 +26,10 @@ public class SignupController extends AbstractRoute {
 
     @Override
     public Object get(final Request request, final Response response) throws Exception {
-        return processTemplate(new HashMap<>(1));
+        Map<String, String> params = new HashMap<>(1);
+        params.put("title", "Sing Up");
+        return processTemplate(params);
     }
-
-
 
     @Override
     public Object post(final Request request, final Response response)
@@ -55,18 +52,10 @@ public class SignupController extends AbstractRoute {
             e.printStackTrace();
 
             Map<String, String> params = new HashMap<>(2);
+            params.put("title", "Sing Up");
             params.put("error", "User already exist, please try another username");
 
             return processTemplate(params);
-
         }
-    }
-
-    private StringWriter processTemplate(Map<String, String> params) throws TemplateException, IOException {
-        Template template = TemplateConfiguration.getTemplate("signup");
-        params.put("title", "Sing Up");
-        StringWriter stringWriter = new StringWriter();
-        template.process(params, stringWriter);
-        return stringWriter;
     }
 }
