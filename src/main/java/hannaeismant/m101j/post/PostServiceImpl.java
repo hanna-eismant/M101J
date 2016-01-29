@@ -2,6 +2,9 @@ package hannaeismant.m101j.post;
 
 import org.bson.Document;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class PostServiceImpl implements PostService {
 
     private PostDAO postDAO;
@@ -14,6 +17,19 @@ public class PostServiceImpl implements PostService {
     public Post create(final String _title, final String _text, final String _tags) {
         Document document = postDAO.create(_title, _text, _tags);
         return buildPostObject(document);
+    }
+
+    @Override
+    public List<Post> findLast(final int _count) {
+        List<Post> posts = new ArrayList<>(_count);
+        List<Document> documents = postDAO.findLast(_count);
+
+        for (Document document : documents) {
+            Post post = buildPostObject(document);
+            posts.add(post);
+        }
+
+        return posts;
     }
 
     private Post buildPostObject(final Document _document) {

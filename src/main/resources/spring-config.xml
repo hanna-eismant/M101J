@@ -62,13 +62,14 @@
         <entry key="/login" value-ref="loginController"/>
         <entry key="/signup" value-ref="signupController"/>
         <entry key="/logout" value-ref="logoutController"/>
-        <entry key="/post/create" value-ref="postCreateController"/>
+        <entry key="/posts/create" value-ref="postCreateController"/>
     </util:map>
 
     <bean class="hannaeismant.m101j.controllers.HomeController"
           id="homeController"
           parent="abstractRoute">
         <constructor-arg index="0" ref="sessionService"/>
+        <constructor-arg index="1" ref="postService"/>
     </bean>
 
     <bean class="hannaeismant.m101j.controllers.LoginController"

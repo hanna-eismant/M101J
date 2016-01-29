@@ -1,10 +1,14 @@
 package hannaeismant.m101j.post;
 
+import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
+import com.mongodb.client.model.Sorts;
 import hannaeismant.m101j.MongoConfiguration;
 import org.bson.Document;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class PostDAOImplMongo implements PostDAO {
 
@@ -32,6 +36,21 @@ public class PostDAOImplMongo implements PostDAO {
 
         collection.insertOne(post);
         return post;
+    }
+
+    @Override
+    public List<Document> findLast(final int _count) {
+        List<Document> documents = new ArrayList<>(_count);
+
+        FindIterable<Document> iterable = collection.find()
+                .limit(_count)
+                .sort(Sorts.descending(CREATED_FIELD));
+
+        for (Document document : iterable) {
+            documents.add(document);
+        }
+
+        return documents;
     }
 
     private String createPermalink(final String _title) {

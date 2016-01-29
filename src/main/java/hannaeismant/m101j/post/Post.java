@@ -17,6 +17,22 @@ public class Post {
         permalink = _permalink;
     }
 
+    public String getTitle() {
+        return title;
+    }
+
+    public String getText() {
+        return text;
+    }
+
+    public String getTags() {
+        return tags;
+    }
+
+    public String getPermalink() {
+        return permalink;
+    }
+
     @Override
     public String toString() {
         return "Post{" +

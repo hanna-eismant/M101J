@@ -12,12 +12,12 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 
 </head>
-<body style="padding: 15px;">
+<body style="padding: 15px 20%;">
 
 <ul class="nav nav-pills">
   <li role="presentation"><a href="/">Home</a></li>
     <#if username??>
-      <li role="presentation"><a href="/post/create">Write new post</a></li>
+      <li role="presentation"><a href="/posts/create">Write new post</a></li>
       <li role="presentation"><a href="/logout">Logout</a></li>
     <#else>
       <li role="presentation"><a href="/login">Login</a></li>
