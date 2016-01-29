@@ -36,7 +36,7 @@ public class LoginController extends AbstractController {
             }
         }
 
-        Map<String, String> params = new HashMap<>(1);
+        Map<String, Object> params = new HashMap<>(1);
         params.put("title", "Login");
         return processTemplate(params, TEMPLATE_NAME);
     }
@@ -51,12 +51,12 @@ public class LoginController extends AbstractController {
         if (isCorrect) {
             String token = SessionTokenGenerator.generate();
             sessionService.create(username, token);
-            response.cookie(COOKIE_NAME, token, SECONDS_IN_HOUR * COOKIE_AGE_HOURS);
+            response.cookie("/", COOKIE_NAME, token, SECONDS_IN_HOUR * COOKIE_AGE_HOURS, false);
             response.redirect("/");
 
             return "";
         } else {
-            Map<String, String> params = new HashMap<>(2);
+            Map<String, Object> params = new HashMap<>(2);
             params.put("title", "Login");
             params.put("error", "Username or password is incorrect");
 

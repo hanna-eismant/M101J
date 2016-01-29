@@ -41,7 +41,7 @@ public class SignupController extends AbstractController {
             }
         }
 
-        Map<String, String> params = new HashMap<>(1);
+        Map<String, Object> params = new HashMap<>(1);
         params.put("title", "Sing Up");
         return processTemplate(params, TEMPLATE_NAME);
     }
@@ -58,7 +58,7 @@ public class SignupController extends AbstractController {
 
             String token = SessionTokenGenerator.generate();
             sessionService.create(username, token);
-            response.cookie(COOKIE_NAME, token, SECONDS_IN_HOUR * COOKIE_AGE_HOURS);
+            response.cookie("/", COOKIE_NAME, token, SECONDS_IN_HOUR * COOKIE_AGE_HOURS, false);
             response.redirect("/");
 
             return "";
@@ -66,7 +66,7 @@ public class SignupController extends AbstractController {
         } catch (UserAlreadyExistException e) {
             e.printStackTrace();
 
-            Map<String, String> params = new HashMap<>(2);
+            Map<String, Object> params = new HashMap<>(2);
             params.put("title", "Sing Up");
             params.put("error", "User already exist, please try another username");
 

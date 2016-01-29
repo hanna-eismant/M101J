@@ -26,7 +26,7 @@ public class PostCreateController extends AbstractController {
     public Object get(final Request request, final Response response)
             throws IOException, TemplateException {
 
-        HashMap<String, String> params = new HashMap<>(1);
+        HashMap<String, Object> params = new HashMap<>(1);
 
         String cookie = request.cookie(COOKIE_NAME);
 
@@ -35,6 +35,10 @@ public class PostCreateController extends AbstractController {
             Session session = sessionService.find(cookie);
 
             if (session == null) {
+                // if you are here, then client has cooke, but server not has session for this token
+                // so, delete it from base
+                sessionService.remove(cookie);
+
                 response.redirect("/");
                 return "";
             } else {
@@ -42,7 +46,7 @@ public class PostCreateController extends AbstractController {
                 params.put("username", session.username);
 
                 // update cookie age
-                response.cookie(COOKIE_NAME, session.token, SECONDS_IN_HOUR * COOKIE_AGE_HOURS);
+                response.cookie("/", COOKIE_NAME, session.token, SECONDS_IN_HOUR * COOKIE_AGE_HOURS, false);
             }
         }
 

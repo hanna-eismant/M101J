@@ -33,7 +33,7 @@ public abstract class AbstractController implements Route {
         return "";  // or throw exception
     }
 
-    protected StringWriter processTemplate(Map<String, String> params, final String name)
+    protected StringWriter processTemplate(Map<String, Object> params, final String name)
             throws TemplateException, IOException {
 
         Template template = templateConfiguration.getTemplate(name);
