@@ -5,7 +5,7 @@
   <h2>${title}</h2>
 
   <input class="form-control form-group" id="title" name="title" placeholder="New Post Title"/>
-  <textarea class="form-control form-group" id="post" name="post" placeholder="Write Post Body Here"></textarea>
+  <textarea class="form-control form-group" id="text" name="text" placeholder="Write Post Body Here"></textarea>
   <input class="form-control form-group" id="tags" name="tags" placeholder="Tags List"/>
 
   <button class="btn btn-primary form-control form-group" type="submit">Create</button>

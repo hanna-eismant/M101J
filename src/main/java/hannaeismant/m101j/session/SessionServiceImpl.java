@@ -27,6 +27,12 @@ public class SessionServiceImpl implements SessionService {
         sessionDAO.remove(_token);
     }
 
+    @Override
+    public boolean check(final String _token) {
+        Document document = sessionDAO.find(_token);
+        return document != null;
+    }
+
     private Session buildSessionObject(final Document _document) {
         if (_document == null) {
             return null;
@@ -37,11 +43,5 @@ public class SessionServiceImpl implements SessionService {
         session.username = _document.getString(SessionDAO.USERNAME_FIELD);
 
         return session;
-    }
-
-    @Override
-    public boolean check(final String _token) {
-        Document document = sessionDAO.find(_token);
-        return document != null;
     }
 }

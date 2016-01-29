@@ -35,6 +35,19 @@
         <constructor-arg ref="sessionDAO"/>
     </bean>
 
+    <!-- Post -->
+
+    <bean class="hannaeismant.m101j.post.PostDAOImplMongo"
+          id="postDAO"
+          init-method="init">
+        <constructor-arg ref="mongoConfiguration"/>
+    </bean>
+
+    <bean class="hannaeismant.m101j.post.PostServiceImpl"
+          id="postService">
+        <constructor-arg ref="postDAO"/>
+    </bean>
+
 
     <!-- Routing -->
 
@@ -81,7 +94,9 @@
     <bean class="hannaeismant.m101j.controllers.PostCreateController"
           id="postCreateController"
           parent="abstractRoute">
-        <constructor-arg ref="sessionService"/>
+
+        <constructor-arg index="0" ref="sessionService"/>
+        <constructor-arg index="1" ref="postService"/>
     </bean>
 
 

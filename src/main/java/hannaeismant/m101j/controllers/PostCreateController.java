@@ -1,6 +1,7 @@
 package hannaeismant.m101j.controllers;
 
 import freemarker.template.TemplateException;
+import hannaeismant.m101j.post.PostService;
 import hannaeismant.m101j.session.Session;
 import hannaeismant.m101j.session.SessionService;
 import spark.Request;
@@ -14,9 +15,11 @@ public class PostCreateController extends AbstractController {
     public static final String TEMPLATE_NAME = "post_create";
 
     private SessionService sessionService;
+    private PostService postService;
 
-    public PostCreateController(final SessionService _sessionService) {
+    public PostCreateController(final SessionService _sessionService, final PostService _postService) {
         sessionService = _sessionService;
+        postService = _postService;
     }
 
     @Override
@@ -50,7 +53,11 @@ public class PostCreateController extends AbstractController {
     @Override
     public Object post(final Request request, final Response response) {
 
+        String title = request.queryParams("title");
+        String text = request.queryParams("text");
+        String tags = request.queryParams("tags");
 
+        postService.create(title, text, tags);
 
         response.redirect("/");
         return "";
