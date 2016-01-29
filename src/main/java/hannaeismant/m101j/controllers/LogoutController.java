@@ -4,7 +4,9 @@ import hannaeismant.m101j.session.SessionService;
 import spark.Request;
 import spark.Response;
 
-public class LogoutController extends AbstractRoute {
+public class LogoutController extends AbstractController {
+
+    public static final String TEMPLATE_NAME = "";
 
     private SessionService sessionService;
 

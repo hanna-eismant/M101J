@@ -1,9 +1,9 @@
 <#import "common.ftl" as layout />
 
 <@layout.masterTemplate>
-<form class="sugnup-form col-xs-4 col-xs-offset-4" method="post">
+<form class="signup-form col-xs-4" method="post">
 
-  <h1>${title}</h1>
+  <h2>${title}</h2>
 
   <input class="form-control form-group" id="username" name="username" placeholder="Username"/>
   <input class="form-control form-group" id="password" name="password" placeholder="Password"/>

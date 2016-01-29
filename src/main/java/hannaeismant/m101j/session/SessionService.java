@@ -12,4 +12,6 @@ public interface SessionService {
     Session find(final @NotNull String _token);
 
     void remove(final @NotNull String _token);
+
+    boolean check(final @NotNull String _token);
 }

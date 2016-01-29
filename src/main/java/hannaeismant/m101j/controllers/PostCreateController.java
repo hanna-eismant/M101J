@@ -1,29 +1,30 @@
 package hannaeismant.m101j.controllers;
 
+import freemarker.template.TemplateException;
 import hannaeismant.m101j.session.Session;
 import hannaeismant.m101j.session.SessionService;
 import spark.Request;
 import spark.Response;
 
+import java.io.IOException;
 import java.util.HashMap;
-import java.util.Map;
 
-public class HomeController extends AbstractController {
+public class PostCreateController extends AbstractController {
 
-    public static final String TEMPLATE_NAME = "home";
+    public static final String TEMPLATE_NAME = "post_create";
 
     private SessionService sessionService;
 
-    public HomeController(final SessionService _sessionService) {
+    public PostCreateController(final SessionService _sessionService) {
         sessionService = _sessionService;
     }
 
     @Override
-    public Object get(final Request request, final Response response) throws Exception {
-        Map<String, String> params = new HashMap<>(2);
-        params.put("title", "Home");
+    public Object get(final Request request, final Response response)
+            throws IOException, TemplateException {
 
-        // get cookie from request
+        HashMap<String, String> params = new HashMap<>(1);
+
         String cookie = request.cookie(COOKIE_NAME);
 
         if (cookie != null) {
@@ -31,8 +32,8 @@ public class HomeController extends AbstractController {
             Session session = sessionService.find(cookie);
 
             if (session == null) {
-                // if not exist → put «null» username
-                params.put("username", null);
+                response.redirect("/");
+                return "";
             } else {
                 // if exist → put username to parameters
                 params.put("username", session.username);
@@ -42,12 +43,16 @@ public class HomeController extends AbstractController {
             }
         }
 
-        // process template with parameters
+        params.put("title", "Create new post");
         return processTemplate(params, TEMPLATE_NAME);
     }
 
     @Override
-    public Object post(final Request request, final Response response) throws Exception {
-        return ""; // or throw exception
+    public Object post(final Request request, final Response response) {
+
+
+
+        response.redirect("/");
+        return "";
     }
 }

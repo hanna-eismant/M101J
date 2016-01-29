@@ -1,5 +1,6 @@
 package hannaeismant.m101j.controllers;
 
+import hannaeismant.m101j.session.Session;
 import hannaeismant.m101j.session.SessionService;
 import hannaeismant.m101j.session.SessionTokenGenerator;
 import hannaeismant.m101j.user.UserService;
@@ -9,7 +10,9 @@ import spark.Response;
 import java.util.HashMap;
 import java.util.Map;
 
-public class LoginController extends AbstractRoute {
+public class LoginController extends AbstractController {
+
+    public static final String TEMPLATE_NAME = "login";
 
     private SessionService sessionService;
     private UserService userService;
@@ -21,9 +24,21 @@ public class LoginController extends AbstractRoute {
 
     @Override
     public Object get(final Request request, final Response response) throws Exception {
+        String cookie = request.cookie(COOKIE_NAME);
+
+        if (cookie != null) {
+            // get session
+            Session session = sessionService.find(cookie);
+
+            if (session != null) {
+                response.redirect("/");
+                return "";
+            }
+        }
+
         Map<String, String> params = new HashMap<>(1);
         params.put("title", "Login");
-        return processTemplate(params);
+        return processTemplate(params, TEMPLATE_NAME);
     }
 
     @Override
@@ -45,7 +60,7 @@ public class LoginController extends AbstractRoute {
             params.put("title", "Login");
             params.put("error", "Username or password is incorrect");
 
-            return processTemplate(params);
+            return processTemplate(params, TEMPLATE_NAME);
         }
     }
 }

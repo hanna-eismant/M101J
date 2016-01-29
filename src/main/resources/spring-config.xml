@@ -2,13 +2,10 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:util="http://www.springframework.org/schema/util"
-       xmlns:context="http://www.springframework.org/schema/context"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
                            http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
                            http://www.springframework.org/schema/util
-                           http://www.springframework.org/schema/util/spring-util-3.2.xsd
-                           http://www.springframework.org/schema/context
-                           http://www.springframework.org/schema/context/spring-context.xsd">
+                           http://www.springframework.org/schema/util/spring-util-3.2.xsd">
 
 
     <!-- User -->
@@ -41,32 +38,49 @@
 
     <!-- Routing -->
 
+    <bean class="hannaeismant.m101j.controllers.AbstractController"
+          id="abstractRoute"
+          abstract="true">
+        <!--<property name="templateConfiguration" ref="templateConfiguration"/>-->
+    </bean>
+
     <util:map id="routing">
         <entry key="/" value-ref="homeController"/>
         <entry key="/login" value-ref="loginController"/>
         <entry key="/signup" value-ref="signupController"/>
         <entry key="/logout" value-ref="logoutController"/>
+        <entry key="/post/create" value-ref="postCreateController"/>
     </util:map>
 
     <bean class="hannaeismant.m101j.controllers.HomeController"
-          id="homeController">
-        <constructor-arg index="0" ref="userService"/>
-        <constructor-arg index="1" ref="sessionService"/>
+          id="homeController"
+          parent="abstractRoute">
+        <constructor-arg index="0" ref="sessionService"/>
     </bean>
 
     <bean class="hannaeismant.m101j.controllers.LoginController"
-          id="loginController">
+          id="loginController"
+          parent="abstractRoute">
         <constructor-arg index="0" ref="sessionService"/>
         <constructor-arg index="1" ref="userService"/>
     </bean>
 
     <bean class="hannaeismant.m101j.controllers.SignupController"
-          id="signupController">
+          id="signupController"
+          parent="abstractRoute">
         <constructor-arg index="0" ref="userService"/>
         <constructor-arg index="1" ref="sessionService"/>
     </bean>
+
     <bean class="hannaeismant.m101j.controllers.LogoutController"
-          id="logoutController">
+          id="logoutController"
+          parent="abstractRoute">
+        <constructor-arg ref="sessionService"/>
+    </bean>
+
+    <bean class="hannaeismant.m101j.controllers.PostCreateController"
+          id="postCreateController"
+          parent="abstractRoute">
         <constructor-arg ref="sessionService"/>
     </bean>
 
@@ -85,6 +99,20 @@
           destroy-method="destroy">
         <constructor-arg ref="routing"/>
     </bean>
+
+    <util:list id="templates" value-type="java.lang.String">
+        <value>home</value>
+        <value>login</value>
+        <value>signup</value>
+        <value>post_create</value>
+    </util:list>
+
+    <!--<bean class="hannaeismant.m101j.TemplateConfiguration"-->
+    <!--id="templateConfiguration"-->
+    <!--init-method="init">-->
+    <!--<constructor-arg index="0" value="\templates"/>-->
+    <!--<constructor-arg index="1" ref="templates"/>-->
+    <!--</bean>-->
 
     <bean id="configurationProperties"
           class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">

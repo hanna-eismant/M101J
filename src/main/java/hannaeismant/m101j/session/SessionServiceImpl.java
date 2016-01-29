@@ -38,4 +38,10 @@ public class SessionServiceImpl implements SessionService {
 
         return session;
     }
+
+    @Override
+    public boolean check(final String _token) {
+        Document document = sessionDAO.find(_token);
+        return document != null;
+    }
 }

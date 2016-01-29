@@ -33,10 +33,12 @@ public abstract class TemplateConfiguration {
             Template homeTemplate = configuration.getTemplate("home.ftl");
             Template loginTemplate = configuration.getTemplate("login.ftl");
             Template singupTemplate = configuration.getTemplate("singup.ftl");
+            Template template = configuration.getTemplate("post_create.ftl");
 
             templates.put("home", homeTemplate);
             templates.put("login", loginTemplate);
             templates.put("signup", singupTemplate);
+            templates.put("post_create", template);
         } catch (IOException e) {
             // todo: process errors
             e.printStackTrace();

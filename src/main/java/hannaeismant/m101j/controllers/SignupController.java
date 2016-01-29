@@ -4,6 +4,7 @@ import freemarker.template.TemplateException;
 import hannaeismant.m101j.exceptions.TimeoutException;
 import hannaeismant.m101j.exceptions.UnknownException;
 import hannaeismant.m101j.exceptions.UserAlreadyExistException;
+import hannaeismant.m101j.session.Session;
 import hannaeismant.m101j.session.SessionService;
 import hannaeismant.m101j.session.SessionTokenGenerator;
 import hannaeismant.m101j.user.UserService;
@@ -14,7 +15,9 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-public class SignupController extends AbstractRoute {
+public class SignupController extends AbstractController {
+
+    public static final String TEMPLATE_NAME = "signup";
 
     private UserService userService;
     private SessionService sessionService;
@@ -26,9 +29,21 @@ public class SignupController extends AbstractRoute {
 
     @Override
     public Object get(final Request request, final Response response) throws Exception {
+        String cookie = request.cookie(COOKIE_NAME);
+
+        if (cookie != null) {
+            // get session
+            Session session = sessionService.find(cookie);
+
+            if (session != null) {
+                response.redirect("/");
+                return "";
+            }
+        }
+
         Map<String, String> params = new HashMap<>(1);
         params.put("title", "Sing Up");
-        return processTemplate(params);
+        return processTemplate(params, TEMPLATE_NAME);
     }
 
     @Override
@@ -48,14 +63,14 @@ public class SignupController extends AbstractRoute {
 
             return "";
 
-        }  catch (UserAlreadyExistException e) {
+        } catch (UserAlreadyExistException e) {
             e.printStackTrace();
 
             Map<String, String> params = new HashMap<>(2);
             params.put("title", "Sing Up");
             params.put("error", "User already exist, please try another username");
 
-            return processTemplate(params);
+            return processTemplate(params, TEMPLATE_NAME);
         }
     }
 }
