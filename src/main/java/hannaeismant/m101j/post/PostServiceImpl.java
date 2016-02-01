@@ -32,6 +32,12 @@ public class PostServiceImpl implements PostService {
         return posts;
     }
 
+    @Override
+    public Post find(final String _permalink) {
+        Document document = postDAO.find(_permalink);
+        return buildPostObject(document);
+    }
+
     private Post buildPostObject(final Document _document) {
         Post post = new Post();
         post.title = _document.getString(PostDAO.TITLE_FIELD);
@@ -40,9 +46,5 @@ public class PostServiceImpl implements PostService {
         post.permalink = _document.getString(PostDAO.PERMALINK_FIELD);
 
         return post;
-    }
-
-    public void setPostDAO(final PostDAO _postDAO) {
-        postDAO = _postDAO;
     }
 }

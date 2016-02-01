@@ -7,4 +7,6 @@ public interface PostService {
     Post create(final String _title, final String _text, final String _tags);
 
     List<Post> findLast(final int _count);
+
+    Post find(final String _permalink);
 }

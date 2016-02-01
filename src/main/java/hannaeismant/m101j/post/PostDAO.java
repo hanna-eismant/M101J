@@ -16,4 +16,6 @@ public interface PostDAO {
     Document create(final String _title, final String _text, final String _tags);
 
     List<Document> findLast(final int _count);
+
+    Document find(final String _permalink);
 }

@@ -63,6 +63,7 @@
         <entry key="/signup" value-ref="signupController"/>
         <entry key="/logout" value-ref="logoutController"/>
         <entry key="/posts/create" value-ref="postCreateController"/>
+        <entry key="/posts/:permalink" value-ref="postViewController"/>
     </util:map>
 
     <bean class="hannaeismant.m101j.controllers.HomeController"
@@ -95,9 +96,14 @@
     <bean class="hannaeismant.m101j.controllers.PostCreateController"
           id="postCreateController"
           parent="abstractRoute">
-
         <constructor-arg index="0" ref="sessionService"/>
         <constructor-arg index="1" ref="postService"/>
+    </bean>
+
+    <bean class="hannaeismant.m101j.controllers.PostViewController"
+          id="postViewController"
+          parent="abstractRoute">
+        <constructor-arg ref="postService"/>
     </bean>
 
 
@@ -121,6 +127,7 @@
         <value>login</value>
         <value>signup</value>
         <value>post_create</value>
+        <value>post_view</value>
     </util:list>
 
     <!--<bean class="hannaeismant.m101j.TemplateConfiguration"-->

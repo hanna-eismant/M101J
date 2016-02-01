@@ -2,13 +2,15 @@ package hannaeismant.m101j.post;
 
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
-import com.mongodb.client.model.Sorts;
+import com.mongodb.client.model.Filters;
 import hannaeismant.m101j.MongoConfiguration;
 import org.bson.Document;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import static com.mongodb.client.model.Sorts.descending;
 
 public class PostDAOImplMongo implements PostDAO {
 
@@ -44,13 +46,20 @@ public class PostDAOImplMongo implements PostDAO {
 
         FindIterable<Document> iterable = collection.find()
                 .limit(_count)
-                .sort(Sorts.descending(CREATED_FIELD));
+                .sort(descending(CREATED_FIELD));
 
         for (Document document : iterable) {
             documents.add(document);
         }
 
         return documents;
+    }
+
+    @Override
+    public Document find(final String _permalink) {
+        return collection.find()
+                .filter(Filters.eq(PERMALINK_FIELD, _permalink))
+                .first();
     }
 
     private String createPermalink(final String _title) {
